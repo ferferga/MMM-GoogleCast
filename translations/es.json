@@ -1,0 +1,6 @@
+{
+  "importError": "Ha habido un error a la hora de configurar MMM-GoogleCast.<br/>Por favor, revisa las instrucciones e inténtalo de nuevo",
+  "nodev": "El dispositivo especificado no se encuentra en la red local.<br/>Verifica todos los ajustes",
+  "notConnected": "No conectado",
+  "error": "Ha ocurrido un error desconocido.<br> Prueba a reiniciar el espejo"
+}

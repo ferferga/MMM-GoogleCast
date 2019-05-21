@@ -1,0 +1,25 @@
+{
+  "name": "Google-Cast",
+  "version": "1.0.0",
+  "description": "Display the songs/media that are being played in your Google Cast devices in your smart mirror",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferferga/MMM-GoogleCast"
+  },
+  "keywords": [
+    "Google",
+    "Google Cast",
+    "Multimedia",
+    "Connected Home"
+  ],
+  "author": "Fernando Fernández",
+  "contributors": "https://github.com/ferferga/MMM-GoogleCast/graphs/contributors",
+  "license": "GPL-3",
+  "bugs": {
+    "url": "https://github.com/ferferga/MMM-GoogleCast/issues"
+  },
+  "homepage": "https://github.com/ferferga/MMM-GoogleCast",
+  "dependencies": {
+    "python-shell": "^0.4.0"
+  }
+}

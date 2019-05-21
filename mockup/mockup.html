@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+    <head>
+        <title>MMM-GoogleCast Mockup</title>
+        <style>
+            body{
+                color: white;
+                font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            }
+            .main {
+                display: grid;
+                background-color: black;
+                text-align: center;
+                grid-template-columns: 95% 5%;
+                width: 100%;
+                height: 100%;
+            }
+            .mediaDetails {
+                display: grid;
+            }
+            #cast-icon, #cast-device-icon {
+                max-width: 28px;
+                max-height: 28px;
+                width: 100%;
+                height: auto;
+                filter: invert(100%);
+                grid-column: 1 / 2;
+            }
+            .header {
+                display: grid; 
+                align-items: center; 
+                justify-content: center;
+                padding: 4px;
+                margin-bottom: 4px;
+            }
+            #app, #deviceName {
+                font-size: 20px; 
+                margin-left: 10px;
+                margin-top: 0;
+                margin-bottom: 0;
+                grid-column: 2 / 2;
+            }
+            #deviceName {
+                font-weight: lighter;
+                font-size: 15px;
+            }
+            .cover {
+                margin: 0 auto;
+            }
+            #albumCover {
+                max-width: 60%;
+                height: auto;
+                margin-right: 25%;
+                border-radius: 10px;
+                margin: 0 auto;
+                grid-column: 2;
+                grid-row: 1;
+            }
+            /* #notPlaying {
+                max-width: 60%;
+                width: 324px;
+                height: auto;
+                margin-right: 25%;
+                border-radius: 10px;
+                margin: 0 auto;
+                grid-column: 2;
+                grid-row: 1;
+                filter: invert(100%);
+                opacity: 0.6;
+            } */
+            .mediaInfo {
+                margin: 0 auto;
+                display: grid;
+                grid-gap: 0px;
+            }
+            #title {
+                font-weight: bold;
+                font-size: 20px; 
+                margin-left: 10px;
+                grid-column: 2/2;
+            }
+            #artist, #albumArtist {
+                font-weight: lighter;
+                font-size: 18px;
+                margin-left: 10px;
+                grid-column: 2/2;
+            }
+            #album {
+                grid-column: 2/2;
+            }
+            .mediaInfo > img {
+                filter: invert(100%);
+                grid-column: 1/2;
+                align-self: center;
+            }
+            .mediaInfo > p {
+                margin-top: 4px;
+                margin-bottom: 4px;
+            }
+            .deviceStatus {
+                max-width: 100%;                          
+                /* border: 2px solid red; */
+                display: flex;
+                flex-direction: column;
+                flex-flow: column;
+                justify-content: space-between;
+                max-height: fit-content;
+            }
+            .deviceStatus > img {
+                filter: invert(100%);
+            }
+            .statusIcon {
+                max-width: 190px;
+                max-height: 190px;
+                width: 100%;
+                height: auto;
+                margin-top: 40%;
+                margin-bottom: 40%;
+            }
+            .volumeDiv {
+                box-sizing: border-box;
+                max-width: 5px;
+                margin: 0 auto;
+                transform: rotate(180deg);
+                flex-grow : 1;
+            }
+            .volumeBar{
+                background-color: white; 
+                border: 4px solid white;
+                vertical-align: bottom; 
+                border-radius: 5px;              
+                height: 20%;
+            }
+            .volumeIcon {
+                max-width: 35px;
+                max-height: 35px;
+                width: 100%;
+                height: auto;
+                align-self: center;
+                margin-bottom: 30%;
+                margin-top: 30%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            <div class="mediaDetails">
+                <div class="header">
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/airplay.svg" id="cast-device-icon">
+                    <p id="deviceName">Living Room Speaker</p>
+                </div>
+                <div class="header">                
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/cast_connected.svg" id="cast-icon">
+                    <p id="app">Google Play Music</p>
+                </div>
+                <div class="cover">
+                    <img id="albumCover" src="https://github.com/ferferga/MMM-GoogleCast/raw/master/mockup/sample_cover.jpg">
+                    <!-- <img id="notPlaying" src ="library_music.svg">   -->
+                    <!-- <img id="albumCover" src="https://i.scdn.co/image/3d279adc8126da0e4b6f2247a6e1dbfbc559e1ac"> -->
+                </div>
+                <div class="mediaInfo">
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/music_note.svg">
+                    <p id="title">Somewhere in Brooklyn (EP Version)</p>
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/album.svg">
+                    <p id="album">Doo-Wops & Hooligans</p>
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/people.svg">
+                    <p id="artist">Bruno Mars</p>
+                    <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/person.svg">
+                    <p id="albumArtist">Bruno Mars</p>
+                </div>
+            </div>
+            <div class="deviceStatus">
+                <img class="statusIcon" src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/play.svg">
+                <div class="volumeDiv">
+                    <div class="volumeBar"></div>
+                </div>
+                <img class="volumeIcon" src="https://github.com/ferferga/MMM-GoogleCast/raw/master/icons/volume_medium.svg">             
+            </div>
+        </div>        
+    </body>
+</html>

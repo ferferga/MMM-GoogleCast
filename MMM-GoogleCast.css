@@ -1,0 +1,133 @@
+.MMM-GoogleCast .main {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 95% 5%;
+    max-width: 300px;
+    height: auto;
+    /* width: 100%;
+    height: 100%;
+    width: 300px; */
+}
+.MMM-GoogleCast .mediaDetails {
+    display: grid;
+}
+.MMM-GoogleCast #cast-icon, #cast-device-icon {
+    max-width: 28px;
+    max-height: 28px;
+    width: 15px;
+    height: auto;
+    filter: invert(100%);
+    /* grid-column: 1 / 2; */
+}
+.MMM-GoogleCast .header {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    flex-direction: row;
+    margin-bottom: -6px;
+    margin-top: -10px;
+}
+.MMM-GoogleCast #app, #deviceName {
+    font-size: 13px; 
+    margin-left: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    /* grid-column: 2 / 2; */
+}
+.MMM-GoogleCast #deviceName {
+    font-weight: lighter;
+}
+.MMM-GoogleCast .cover {
+    text-align: center;
+    margin: 0 auto;
+}
+.MMM-GoogleCast #albumCover{
+    max-width: 60%;
+    display: inline-block;
+    height: auto;
+    border-radius: 10px;
+}
+.MMM-GoogleCast #notPlaying {
+    max-width: 60%;
+    width: 324px;
+    height: auto;
+    /* margin-right: 25%; */
+    border-radius: 10px;
+    margin: 0 auto;
+    filter: invert(100%);
+    opacity: 0.6;
+}
+.MMM-GoogleCast .mediaInfo {
+    display: grid;
+    grid-gap: 0px;
+    grid-template-columns: 30px 90%;
+}
+.MMM-GoogleCast #title {
+    font-weight: bold;
+    font-size: 20px;
+    grid-column: 2/2;
+}
+.MMM-GoogleCast #artist, #albumArtist {
+    font-weight: lighter;
+    font-size: 12px;
+    grid-column: 2/2;
+}
+.MMM-GoogleCast #album {
+    grid-column: 2/2;
+    font-size: 15px;
+}
+.MMM-GoogleCast .mediaInfo > img {
+    filter: invert(100%);
+    grid-column: 1/2;
+    margin-top: 2px;
+    margin-bottom: -10px;
+    align-self: center;
+}
+.MMM-GoogleCast .mediaInfo > p {
+    margin-bottom: 0px;
+    /* margin-top: 5px; */
+    padding: 0px;
+    margin-left: 10px;
+    text-align: left;
+    line-height: 18px;
+}
+.MMM-GoogleCast .deviceStatus {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+    justify-content: space-between;
+    max-height: fit-content;
+}
+/* .MMM-GoogleCast .statusIcon {
+    width: 50px;
+    height: 50px;
+    margin-top: 40%;
+    margin-bottom: 40%;
+    align-self: center;
+    margin-right: 5px;
+    filter: invert(100%);
+} */
+.MMM-GoogleCast .volumeDiv {
+    box-sizing: border-box;
+    max-width: 5px;
+    margin: 0 auto;
+    transform: rotate(180deg);
+    flex-grow : 1;
+}
+/* .MMM-GoogleCast .volumeBar{
+    background-color: white; 
+    border: 4px solid white;
+    vertical-align: bottom; 
+    border-radius: 5px; 
+    max-height: fit-content;              
+    height: 50%;
+} */
+.MMM-GoogleCast .volumeIcon {
+    width: 35px;
+    height: 35px;
+    align-self: center;
+    margin-bottom: 30%;
+    margin-top: 30%;
+    filter: invert(100%);
+}

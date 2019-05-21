@@ -1,0 +1,6 @@
+{
+  "importError": "There was a problem loading MMM-GoogleCast, likely due to a bad setup.<br/>Read the instructions and verify that the module is correctly configured",
+  "nodev": "The specified device in config.js is unreachable",
+  "notConnected": "Not connected",
+  "error": "There was an unknown error.<br>Try to reboot your mirror"
+}
