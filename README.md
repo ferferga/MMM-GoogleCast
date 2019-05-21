@@ -18,7 +18,7 @@ This module works by using a Python script and the module [pyChromecast](https:/
 
 ## Mockup
 
-You can see a mockup of the module [in this page](https://github.com/ferferga/MMM-GoogleCast/raw/master/mockup/mockup.html).
+You can see a mockup of the module [in this page](https://ferferga.github.io/MMM-GoogleCast/mockup/mockup.html).
 
 ## Installation
 
@@ -34,26 +34,24 @@ sudo apt install python3 python3-pip -y && sudo apt clean && sudo pip3 install p
 
 This will scan all your Google Cast devices in your network, so make sure the device you want to link to your mirror is up and running. A list similar to this one will be displayed:
 
-``
+```
 DEVICE 0
---------------------
+=========================
 Name: Living Room speaker
 Type: audio
 ID: xxxxxx-xxxxxxx-xxxxxxxx-xxxxxx
---------------------
+=========================
 DEVICE 1
---------------------
 Name: Bedroom TV
 Type: video
 ID: yyyyyy-yyyy-yyyyyyyy-yyyyyy
---------------------
+=========================
 DEVICE 2
---------------------
 Name: All Speakers
 Type: group
 ID: zzzzzz-zzzzz-zzzzzzz-zzzzzz
---------------------
-``
+=========================
+```
 
 As you can see, you can also link audio groups apart from individual video and speakers devices. Note the ID of the device you want to link to your mirror. If no devices are detected, go to "Issues" section below
 
