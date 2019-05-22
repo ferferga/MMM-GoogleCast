@@ -1,5 +1,5 @@
 # MMM-GoogleCast
-### See what's playing in your Google Cast device (Chromecast, Chromecast Audio, Android TV, JBL Speakers...). Works with, virtually, all apps.
+### See what's playing in your Google Cast device (Chromecast, Chromecast Audio, Android TV, JBL Speakers...) inside your mirror. Compatible with, virtually, any app.
 
 <p align="center">
   <img src="https://github.com/ferferga/MMM-GoogleCast/raw/master/screenshots/intro.jpg">
@@ -56,7 +56,7 @@ ID: zzzzzz-zzzzz-zzzzzzz-zzzzzz
 As you can see, you can also link audio groups apart from individual video and speakers devices. Note the ID of the device you want to link to your mirror. If no devices are detected, go to "Issues" section below
 
 **Step 3**: Copy and paste this in your ``config.js`` file, replacing the ``device`` property with the ID of the device you want to link to your mirror:
-``
+```
 		{
 			module: 'MMM-GoogleCast',
 			position: "top_left",
@@ -66,7 +66,7 @@ As you can see, you can also link audio groups apart from individual video and s
 				device: "PASTE HERE THE ID OF THE DEVICE YOU NOTED BEFORE",
 			}
 		},
-``
+```
 
 And everything is done! You should now see the media that's being played in your mirror
 
