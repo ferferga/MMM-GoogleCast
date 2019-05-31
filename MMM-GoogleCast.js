@@ -235,8 +235,7 @@ Module.register("MMM-GoogleCast",{
 			}
 			else
 			{
-				volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; overflow: hidden; height: " + (this.volume * 100) + "px";
-				// volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
+				volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
 			}			
 			volumeDiv.appendChild(volumeBar);
 			deviceStatus.appendChild(volumeDiv);
