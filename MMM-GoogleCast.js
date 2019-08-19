@@ -1,6 +1,8 @@
 Module.register("MMM-GoogleCast",{
 	defaults: {
-		device: null
+		device: null,
+		hide: false,
+		animationSpeed: 3000,
 	},
 
 	getStyles: function() {
@@ -29,11 +31,26 @@ Module.register("MMM-GoogleCast",{
 		{
 			this.app = payload.app;
 			this.volume = payload.volume;
-			if (this.app == null)
+			if (this.config.device == payload.id)
 			{
-				this.media = false;
-			}
-			this.updateDom();
+				if (this.app == null)
+				{
+					this.media = false;
+					if (this.config.hide)
+					{
+						this.hide(this.config.animationSpeed)
+					}
+					else
+					{
+						this.updateDom();
+					}
+				}								
+				if (this.app && this.config.hide)
+				{
+					this.updateDom();
+					this.show(this.config.animationSpeed);
+				}
+			}		
 		}
 		else if (payload.type == "mediaStatus")
 		{
@@ -51,7 +68,17 @@ Module.register("MMM-GoogleCast",{
 			{
 				this.media = true;
 			}
-			this.updateDom()
+			if (this.config.device == payload.id)
+			{
+				if (this.media == false && this.config.hide)
+				{
+					this.hide(this.config.animationSpeed)
+				}
+				else
+				{
+					this.updateDom()
+				}				
+			}			
 		}
 		else if (payload.type == "status")
 		{
@@ -116,7 +143,7 @@ Module.register("MMM-GoogleCast",{
 				main.appendChild(spinning);
 			}
 			main.style = "text-align: center; line-height: 19px";		
-		}	
+		}
 		else
 		{
 			main.classList.add("main");
@@ -236,7 +263,7 @@ Module.register("MMM-GoogleCast",{
 			else
 			{
 				volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; overflow: hidden; height: " + (this.volume * 100) + "px";
-				// volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
+			// 	volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
 			}			
 			volumeDiv.appendChild(volumeBar);
 			deviceStatus.appendChild(volumeDiv);
