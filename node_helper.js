@@ -13,11 +13,11 @@ module.exports = NodeHelper.create({
     pyshell.on('message', function (message) {
         if (message.hasOwnProperty('deviceStatus'))
         {
-          self.sendSocketNotification('deviceStatus', {type: "deviceStatus", app: message.deviceStatus.app, volume: message.deviceStatus.volume})
+          self.sendSocketNotification('deviceStatus', {type: "deviceStatus", id: message.deviceStatus.id, app: message.deviceStatus.app, volume: message.deviceStatus.volume})
         }
         if (message.hasOwnProperty('mediaStatus'))
         {
-          self.sendSocketNotification('mediaStatus', {type: "mediaStatus", albumArtist: message.mediaStatus.albumArtist, image: message.mediaStatus.image, 
+          self.sendSocketNotification('mediaStatus', {type: "mediaStatus", id: message.mediaStatus.id, albumArtist: message.mediaStatus.albumArtist, image: message.mediaStatus.image, 
             title: message.mediaStatus.title, state: message.mediaStatus.state, album: message.mediaStatus.album, artist: message.mediaStatus.artist});
         }
         if (message.hasOwnProperty('status'))
@@ -41,10 +41,7 @@ module.exports = NodeHelper.create({
     socketNotificationReceived: function(notification, payload) {
       if(notification === 'CONFIG') {
         this.config = payload
-        if(!pythonStarted) {
-          pythonStarted = true;
-          this.python_start();
-          };
+        this.python_start();
       };
     }
 });

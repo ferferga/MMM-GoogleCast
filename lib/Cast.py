@@ -8,6 +8,7 @@ oldStreamId = None
 oldState = None
 OpenedApp = None
 VolumeLevel = None
+deviceId = None
 
 class MMConfig:
     CONFIG_DATA = json.loads(sys.argv[1])
@@ -53,7 +54,7 @@ class StatusMediaListener:
             #     print("AlbumArtist:" + str(status.album_artist))
             #     print("State:" + str(status.player_state))
             #     print("ImageURL:" + str(link))
-            toNode("mediaStatus", {"title": status.title, "artist": status.artist, "album": status.album_name, "albumArtist": status.album_artist, "state": status.player_state, "image": link})
+            toNode("mediaStatus", {"id": deviceId, "title": status.title, "artist": status.artist, "album": status.album_name, "albumArtist": status.album_artist, "state": status.player_state, "image": link})
 
 class StatusListener:
     def __init__(self, name, cast):
@@ -68,7 +69,7 @@ class StatusListener:
             # if __debug__:
             #     print("VolumeLevel:" + str(status.volume_level))
             #     print("ConnectedApp:" + str(status.display_name))
-            toNode("deviceStatus", {"volume": status.volume_level, "app": status.display_name})
+            toNode("deviceStatus", {"id": deviceId, "volume": status.volume_level, "app": status.display_name})
         if VolumeLevel != status.volume_level or OpenedApp != status.display_name:
             # if __debug__:
             #     print("VolumeLevel:" + str(status.volume_level))
@@ -77,22 +78,23 @@ class StatusListener:
                 VolumeLevel = status.volume_level
             else:
                 OpenedApp = status.display_name
-            toNode("deviceStatus", {"volume": status.volume_level, "app": status.display_name})
+            toNode("deviceStatus", {"id": deviceId, "volume": status.volume_level, "app": status.display_name})
 
 def shutdown(self, signum):
     toNode("status", 'Shutdown: Closing MMM-GoogleCast Python backend...')
     quit()
-try:   
+try:
+    deviceId = MMConfig.getDeviceId()   
     devices = pychromecast.get_chromecasts()
     device = next(cc for cc in devices
-                    if str(cc.device.uuid) == MMConfig.getDeviceId())
+                    if str(cc.device.uuid) == deviceId)
     device.start()
     listenerMedia = StatusMediaListener(device.name, device)
     device.media_controller.register_status_listener(listenerMedia)
     listenerCast = StatusListener(device.name, device)
     device.register_status_listener(listenerCast)
 except:
-    toNode("status", "Device not found or unreachable")
+    toNode("status", "Device '" + str(deviceId) + "' not found or unreachable")
     quit()
 toNode("status", "Cast.py loaded successfully")
 signal.signal(signal.SIGINT, shutdown)
