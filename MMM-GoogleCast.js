@@ -3,6 +3,8 @@ Module.register("MMM-GoogleCast",{
 		device: null,
 		hide: false,
 		animationSpeed: 3000,
+		showDeviceStatus: true,
+		showAlbumArtist: true,
 	},
 
 	getStyles: function() {
@@ -44,13 +46,13 @@ Module.register("MMM-GoogleCast",{
 					{
 						this.updateDom();
 					}
-				}								
+				}
 				if (this.app && this.config.hide)
 				{
 					this.updateDom();
 					this.show(this.config.animationSpeed);
 				}
-			}		
+			}
 		}
 		else if (payload.type == "mediaStatus")
 		{
@@ -215,7 +217,7 @@ Module.register("MMM-GoogleCast",{
 					mediaInfo.appendChild(people);
 					mediaInfo.appendChild(artist);
 				}
-				if (this.albumArtist != null)
+				if (this.albumArtist != null && this.config.showAlbumArtist)
 				{
 					var person = document.createElement("img");
 					person.src = this.file("icons/person.svg");
@@ -228,72 +230,78 @@ Module.register("MMM-GoogleCast",{
 				}	
 			}			
 			//
-			var deviceStatus = document.createElement("div");
-			var statusIcon = document.createElement("img");
-			statusIcon.style = "width: 50px; height: 50px; margin-top: 40%;	margin-bottom: 40%;	align-self: center;	margin-right: 5px; filter: invert(100%)";
-			if (this.state == "PLAYING")
+			if (this.config.showDeviceStatus) 
 			{
-				statusIcon.src = this.file("icons/play.svg");
+				var deviceStatus = document.createElement("div");
+				var statusIcon = document.createElement("img");
+				statusIcon.style = "width: 50px; height: 50px; margin-top: 40%;	margin-bottom: 40%;	align-self: center;	margin-right: 5px; filter: invert(100%)";
+				if (this.state == "PLAYING")
+				{
+					statusIcon.src = this.file("icons/play.svg");
+				}
+				else if (this.state == "IDLE")
+				{
+					statusIcon.src = this.file("icons/idle.svg");
+				}
+				else if (this.state == "BUFFERING")
+				{
+					statusIcon.src = this.file("icons/spinning.gif");
+					statusIcon.style = "width: 50px; height: 50px; margin-top: 40%;	margin-bottom: 40%;	align-self: center;	margin-right: 5px";
+				}
+				else if (this.state == "PAUSED")
+				{
+					statusIcon.src = this.file("icons/pause.svg");
+				}
+				else if (!this.media)
+				{
+					statusIcon.style = "visibility: hidden";
+				}
+				deviceStatus.appendChild(statusIcon);
+				var volumeDiv = document.createElement("div");
+				volumeDiv.classList.add("volumeDiv");
+				var volumeBar = document.createElement("div");
+				if (this.volume == 0)
+				{
+					volumeBar.style = "visibility: hidden";
+				}
+				else
+				{
+					volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; overflow: hidden; height: " + (this.volume * 100) + "px";
+				// 	volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
+				}			
+				volumeDiv.appendChild(volumeBar);
+				deviceStatus.appendChild(volumeDiv);
+				var volumeIcon = document.createElement("img");
+				volumeIcon.classList.add("volumeIcon");
+				if (this.volume == 0)
+				{
+					volumeIcon.src = this.file("icons/volume_muted.svg");
+				}
+				else if (this.volume <= 0.30)
+				{
+					volumeIcon.src = this.file("icons/volume_low.svg");
+				}
+				else if (this.volume <= 0.58)
+				{
+					volumeIcon.src = this.file("icons/volume_medium.svg");
+				}
+				else if (this.volume <= 0.85)
+				{
+					volumeIcon.src = this.file("icons/volume_high.svg");
+				}
+				else if (this.volume >= 0.85)
+				{
+					volumeIcon.src = this.file("icons/volume_insane.svg");
+				}
+				deviceStatus.appendChild(volumeIcon);
 			}
-			else if (this.state == "IDLE")
-			{
-				statusIcon.src = this.file("icons/idle.svg");
-			}
-			else if (this.state == "BUFFERING")
-			{
-				statusIcon.src = this.file("icons/spinning.gif");
-				statusIcon.style = "width: 50px; height: 50px; margin-top: 40%;	margin-bottom: 40%;	align-self: center;	margin-right: 5px";
-			}
-			else if (this.state == "PAUSED")
-			{
-				statusIcon.src = this.file("icons/pause.svg");
-			}
-			else if (!this.media)
-			{
-				statusIcon.style = "visibility: hidden";
-			}
-			deviceStatus.appendChild(statusIcon);
-			var volumeDiv = document.createElement("div");
-			volumeDiv.classList.add("volumeDiv");
-			var volumeBar = document.createElement("div");
-			if (this.volume == 0)
-			{
-				volumeBar.style = "visibility: hidden";
-			}
-			else
-			{
-				volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; overflow: hidden; height: " + (this.volume * 100) + "px";
-			// 	volumeBar.style = "background-color: white;	border: 4px solid white; vertical-align: bottom; border-radius: 5px; height: " + (this.volume * 100) + "%";
-			}			
-			volumeDiv.appendChild(volumeBar);
-			deviceStatus.appendChild(volumeDiv);
-			var volumeIcon = document.createElement("img");
-			volumeIcon.classList.add("volumeIcon");
-			if (this.volume == 0)
-			{
-				volumeIcon.src = this.file("icons/volume_muted.svg");
-			}
-			else if (this.volume <= 0.30)
-			{
-				volumeIcon.src = this.file("icons/volume_low.svg");
-			}
-			else if (this.volume <= 0.58)
-			{
-				volumeIcon.src = this.file("icons/volume_medium.svg");
-			}
-			else if (this.volume <= 0.85)
-			{
-				volumeIcon.src = this.file("icons/volume_high.svg");
-			}
-			else if (this.volume >= 0.85)
-			{
-				volumeIcon.src = this.file("icons/volume_insane.svg");
-			}
-			deviceStatus.appendChild(volumeIcon);
 			// CSS styles to grid divs
 			mediaDetails.classList.add("mediaDetails");			
 			cover.classList.add("cover");			
-			deviceStatus.classList.add("deviceStatus");
+			if (this.config.showDeviceStatus) 
+			{
+				deviceStatus.classList.add("deviceStatus");
+			}
 			// All the elements will be appended here
 			mediaDetails.appendChild(header);
 			mediaDetails.appendChild(cover);
@@ -303,7 +311,10 @@ Module.register("MMM-GoogleCast",{
 				mediaDetails.appendChild(mediaInfo);
 			}			
 			main.appendChild(mediaDetails);
-			main.appendChild(deviceStatus);
+			if (this.config.showDeviceStatus) 
+			{
+				main.appendChild(deviceStatus);
+			}
 		}
 		return main;
 	},
