@@ -74,6 +74,8 @@ Available options in ``config.js`` for advanced users:
 | ``device``         | ``null``    | Specifies the device to link in your mirror                                                |
 | ``hide``           | ``false``   | Setting this to true will hide the module if no app is connected to the Google Cast device |
 | ``animationSpeed`` | ``3000``    | Sets the speed of the animations while hiding/showing the module                           |
+| ``showDeviceStatus`` | ``true``    | Shows or hides the device status (If media is playing, paused, buffering...)             |
+| ``showAlbumArtist`` | ``true``    | Shows or hides the information about the album artist                                     |
 
 You can also run multiple instances of the module, one for every device do you want to track. Copy multiple times the snippet above
 in your ``config.js`` (one for the device) and change the ID of the device in each instance.
