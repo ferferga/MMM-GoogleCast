@@ -1,6 +1,6 @@
 {
   "name": "Google-Cast",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "Display the songs/media that are being played in your Google Cast devices in your smart mirror",
   "repository": {
     "type": "git",

@@ -1,0 +1,2 @@
+zeroconf==0.24.3
+PyChromecast==4.1.0
