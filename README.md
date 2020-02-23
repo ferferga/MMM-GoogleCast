@@ -25,7 +25,7 @@ You can see a mockup of the module [in this page](https://ferferga.github.io/MMM
 **Step 1**: One-line installation through terminal:
 
 ``
-sudo apt install python3 python3-pip -y && sudo apt clean && cd ~/MagicMirror/modules && git clone https://github.com/ferferga/MMM-GoogleCast.git && cd MMM-GoogleCast && sudo pip3 install -r requirements.txt && npm install && echo "Installation succesfull"
+sudo apt install python3 python3-pip -y && sudo apt clean && cd ~/MagicMirror/modules && git clone https://github.com/ferferga/MMM-GoogleCast.git && cd MMM-GoogleCast && sudo pip3 install pychromecast && npm install && echo "Installation succesfull"
 ``
 
 **Step 2**: If you see the message "Installation successfull", the first step is done! Now run:
