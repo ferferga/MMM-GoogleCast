@@ -1,9 +1,9 @@
 Module.register("MMM-GoogleCast",{
 	defaults: {
 		device: null,
-		hide: false,
+		hide: true,
 		animationSpeed: 3000,
-		showDeviceStatus: true,
+		showDeviceStatus: false,
 		showAlbumArtist: true,
 	},
 
@@ -29,7 +29,10 @@ Module.register("MMM-GoogleCast",{
 	// },
 
 	socketNotificationReceived: function(notification, payload) {
+		console.log(payload);
+		
 		if (payload.type == "deviceStatus")
+		
 		{
 			this.app = payload.app;
 			this.volume = payload.volume;
@@ -44,27 +47,29 @@ Module.register("MMM-GoogleCast",{
 					}
 					else
 					{
+						this.show(this.config.animationSpeed);
 						this.updateDom();
 					}
 				}
 				if (this.app && this.config.hide)
 				{
-					this.updateDom();
 					this.show(this.config.animationSpeed);
+					this.updateDom();
 				}
 			}
 		}
 		else if (payload.type == "mediaStatus")
-		{
+		{	this.sendNotification('GoogleCast', payload);
 			this.albumArtist = payload.albumArtist;
 			this.image = payload.image;
 			this.title = payload.title;
 			this.state = payload.state;
 			this.album = payload.album;
 			this.artist = payload.artist;
-			if (this.albumArtist == null && this.image == null && this.title == null && this.album == null && this.artist == null)
+			if (this.albumArtist == null && this.image == null && this.title == null && this.album == null && this.artist == null) // removed this.albumArtist == null && 
 			{
 				this.media = false;
+				
 			}
 			else
 			{
@@ -78,6 +83,7 @@ Module.register("MMM-GoogleCast",{
 				}
 				else
 				{
+					this.show(this.config.animationSpeed);
 					this.updateDom()
 				}				
 			}			
@@ -87,6 +93,7 @@ Module.register("MMM-GoogleCast",{
 			if (payload.message == "Device not found or unreachable")
 			{
 				this.unreachable = true;
+				this.hide(this.config.animationSpeed);
 				this.updateDom(3000);
 			}
 			else if (payload.message == "Cast.py loaded successfully")
@@ -102,12 +109,14 @@ Module.register("MMM-GoogleCast",{
 			{
 				this.error = true;
 				this.moduleLoaded = false;
+				this.hide(this.config.animationSpeed);
 				this.updateDom(3000);
 			}
 		}
 		else if (payload.type == "importError")
 		{
 			this.importError = true;
+			this.hide(this.config.animationSpeed);
 			this.updateDom(3000);
 		}
 	},
@@ -119,6 +128,7 @@ Module.register("MMM-GoogleCast",{
 			var spinning = document.createElement("img");
 			if (this.unreachable || this.importError || this.error)
 			{
+				this.hide(this.config.animationSpeed);
 				spinning.src = this.file("icons/error.svg");
 				spinning.style = "width: 30%; height: 30%; filter: invert(100%)";
 				var message = document.createElement("p");
@@ -140,6 +150,7 @@ Module.register("MMM-GoogleCast",{
 			}				
 			else
 			{
+				this.hide(this.config.animationSpeed);
 				spinning.src = this.file("icons/spinning.gif");
 				spinning.style = "width: 40px; height: 40px";
 				main.appendChild(spinning);
@@ -237,7 +248,7 @@ Module.register("MMM-GoogleCast",{
 				statusIcon.style = "width: 50px; height: 50px; margin-top: 40%;	margin-bottom: 40%;	align-self: center;	margin-right: 5px; filter: invert(100%)";
 				if (this.state == "PLAYING")
 				{
-					statusIcon.src = this.file("icons/play.svg");
+					statusIcon.src = this.file("icons/pause.svg");
 				}
 				else if (this.state == "IDLE")
 				{
@@ -250,7 +261,7 @@ Module.register("MMM-GoogleCast",{
 				}
 				else if (this.state == "PAUSED")
 				{
-					statusIcon.src = this.file("icons/pause.svg");
+					statusIcon.src = this.file("icons/play.svg");
 				}
 				else if (!this.media)
 				{
@@ -323,6 +334,6 @@ Module.register("MMM-GoogleCast",{
 		this.importError = false;
 		this.unreachable = false;
 		this.sendSocketNotification('CONFIG', this.config);
-		Log.info('Starting module: ' + this.name);
+		//Log.info('Starting module: ' + this.name);
 	}
 });
