@@ -1,5 +1,4 @@
-import pychromecast
-import getpass
+import pychromecast, getpass
 print("\nScanning Google Cast devices inside your network...")
 chromecasts = pychromecast.get_chromecasts()
 for num,cc in enumerate(chromecasts):

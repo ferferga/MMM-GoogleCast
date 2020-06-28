@@ -1,5 +1,5 @@
 {
-  "name": "Google-Cast",
+  "name": "MMMGoogleCast",
   "version": "2.1.0",
   "description": "Display the songs/media that are being played in your Google Cast devices in your smart mirror",
   "repository": {
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ferferga/MMM-GoogleCast",
   "dependencies": {
+    "material-icons": "^0.3.1",
     "python-shell": "^0.4.0"
   }
 }

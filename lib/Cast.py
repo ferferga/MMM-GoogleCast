@@ -1,7 +1,4 @@
-import json
-import sys
-import signal
-import time
+import json, sys, signal, time
 
 oldlink = None
 oldStreamId = None
