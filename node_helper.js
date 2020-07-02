@@ -18,8 +18,8 @@ module.exports = NodeHelper.create({
             title: message.mediaStatus.title, state: message.mediaStatus.state, album: message.mediaStatus.album, artist: message.mediaStatus.artist});
         }
 
-        if (message.hasOwnProperty('status')) {
-          self.sendSocketNotification('status', {type: 'status', message: message.status});
+        if (message.hasOwnProperty('GCAST_BACKEND_STATUS')) {
+          self.sendSocketNotification('GCAST_BACKEND_STATUS', {type: 'GCAST_BACKEND_STATUS', message: message.status});
         }
 
         if (message.hasOwnProperty('importError')) {

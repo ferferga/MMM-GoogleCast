@@ -1,6 +1,7 @@
 import pychromecast, getpass
 print("\nScanning Google Cast devices inside your network...")
-chromecasts = pychromecast.get_chromecasts()
+chromecasts, browser = pychromecast.get_chromecasts()
+pychromecast.discovery.stop_discovery(browser)
 for num,cc in enumerate(chromecasts):
     print("DEVICE " + str(num))
     print("--------------------")

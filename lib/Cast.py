@@ -1,102 +1,156 @@
-import json, sys, signal, time
+#!/usr/bin/env python3
 
-oldlink = None
-oldStreamId = None
-oldState = None
-OpenedApp = None
-VolumeLevel = None
-deviceId = None
+## This part of the backend handles all the exceptions and convert them to a json
+## representation, so they can be understood easily looking at MagicMirror logs.
+
+import sys, json
+class NullOutput():
+    def write(self, s):
+        pass
+    
+def toNode(type, message):
+    print(json.dumps({type: message}))
+    sys.stdout.flush()
+   
+def exception_handler(exception_type, exception, traceback):
+    """
+    Handle exceptions in MMM-GoogleCast's backend
+    """
+    dct = {'exception_type': str(exception_type.__name__),
+           'exception': str(exception)}
+    toNode('MMGCAST_BACKEND_EXCEPTION', dct)
+sys.excepthook = exception_handler
+sys.stderr = NullOutput()
+
+## Changes in the exception handling are done at this point. Continue with
+## execution flow
+
+import asyncio, signal, logging, datetime
+
+loop = None
+device = None
+
+def shutdown(self, signum):
+    """
+    Terminates the backend gracefully after receiving a signal
+    """
+    toNode('MMGCAST_BACKEND_STATUS', 'SHUTDOWN')
+    quit(signum)
+    
+def json_serializer(obj):
+    """
+    Serializes to JSON objects that are not directly serializable
+    """
+    if isinstance(obj, (datetime.date, datetime.datetime)):
+        return obj.timestamp()
+    else:
+        return obj.__str__()
+    
+try:
+    import pychromecast
+except ImportError:
+    toNode('MMGCAST_BACKEND_EXCEPTION', 'IMPORT_ERROR')
+    shutdown(None, 1)
 
 class MMConfig:
+    """
+    Get config from config.json passed as an argument
+    """
     CONFIG_DATA = json.loads(sys.argv[1])
     DEVICE_ATTR = 'device'
+    
+    @classmethod
+    def get(cls,key):
+        return cls.CONFIG_DATA[key]
 
     @classmethod
     def getDeviceId(cls):
         return cls.get(cls.DEVICE_ATTR)
 
-    @classmethod
-    def get(cls,key):
-        return cls.CONFIG_DATA[key]
-
-def toNode(type, message):
-    print(json.dumps({type: message}))
-    sys.stdout.flush()
-
-toNode("status", "Loading MMM-GoogleCast Python backend...")
-try:
-    import pychromecast
-except:
-    toNode("importError", "Python requeriments for MMM-GoogleCast were not detected/installed correctly")
-
 class StatusMediaListener:
-    def __init__(self, name, cast):
-        self.name = name
-        self.cast = cast
+    """
+    Class that handles events related to the media that is playing in the cast device
+    """
+    def __init__(self, device):
+        self.device = device
 
     def new_media_status(self, status):
-        global oldlink, oldStreamId, oldState
-        try:
-            link = status.images[0].url
-        except IndexError:
-            link = None
-        if oldState != status.player_state or (oldlink != link and oldStreamId != status.content_id) or (oldState is None and oldState is None and oldStreamId is None):
-            oldState = status.player_state
-            oldlink = link
-            oldStreamId = status.content_id
-            # if __debug__:
-            #     print("Title:" + str(status.title))
-            #     print("Artist:" + str(status.artist))
-            #     print("AlbumName:" + str(status.album_name))
-            #     print("AlbumArtist:" + str(status.album_artist))
-            #     print("State:" + str(status.player_state))
-            #     print("ImageURL:" + str(link))
-            toNode("mediaStatus", {"id": deviceId, "title": status.title, "artist": status.artist, "album": status.album_name, "albumArtist": status.album_artist, "state": status.player_state, "image": link})
+        dct = {'device_id': str(device.uuid),
+               'device_name': device.name,
+               'device_model': device.model_name}
+        status_dct = {'content': json.loads(json.dumps(status.__dict__, default=json_serializer))}
+        dct.update(status_dct)
+        toNode('MMGCAST_MEDIA_STATUS', dct)
 
 class StatusListener:
-    def __init__(self, name, cast):
-        self.name = name
-        self.cast = cast
+    """
+    Class that handles events related to the paired revice (e.g: volume change, app change, etc...)
+    """
+    def __init__(self, device):
+        self.device = device
 
     def new_cast_status(self, status):
-        global VolumeLevel, OpenedApp
-        if VolumeLevel is None and OpenedApp is None:
-            VolumeLevel = status.volume_level
-            OpenedApp = status.display_name
-            # if __debug__:
-            #     print("VolumeLevel:" + str(status.volume_level))
-            #     print("ConnectedApp:" + str(status.display_name))
-            toNode("deviceStatus", {"id": deviceId, "volume": status.volume_level, "app": status.display_name})
-        if VolumeLevel != status.volume_level or OpenedApp != status.display_name:
-            # if __debug__:
-            #     print("VolumeLevel:" + str(status.volume_level))
-            #     print("ConnectedApp:" + str(status.display_name))
-            if VolumeLevel != status.volume_level:
-                VolumeLevel = status.volume_level
-            else:
-                OpenedApp = status.display_name
-            toNode("deviceStatus", {"id": deviceId, "volume": status.volume_level, "app": status.display_name})
+        dct = {'device_id': str(device.uuid),
+               'device_name': device.name,
+               'device_model': device.model_name}
+        status_dct = {'content': json.loads(json.dumps(status._asdict(), default=json_serializer))}
+        dct.update(status_dct)
+        toNode('MMGCAST_DEVICE_STATUS', dct)
+        
+def registerDevice(newDevice):
+    """
+    Register a new device object, nulling dead or disconnected devices
+    """
+    global device
+    del device
+    device = newDevice
+    device.register_status_listener(StatusListener(device))
+    device.media_controller.register_status_listener(StatusMediaListener(device))
+    toNode('MMGCAST_BACKEND_STATUS', 'PAIRED')
+    device.socket_client.tries = None
+    device.wait()
 
-def shutdown(self, signum):
-    toNode("status", 'Shutdown: Closing MMM-GoogleCast Python backend...')
-    quit()
-try:
-    deviceId = MMConfig.getDeviceId()   
-    devices = pychromecast.get_chromecasts()
-    device = next(cc for cc in devices
-                    if str(cc.device.uuid) == deviceId)
-    device.start()
-    listenerMedia = StatusMediaListener(device.name, device)
-    device.media_controller.register_status_listener(listenerMedia)
-    listenerCast = StatusListener(device.name, device)
-    device.register_status_listener(listenerCast)
-except:
-    toNode("status", "Device '" + str(deviceId) + "' not found or unreachable")
-    quit()
-toNode("status", "Cast.py loaded successfully")
-signal.signal(signal.SIGINT, shutdown)
-# if __debug__:
-#     input("Listening to events...")
-# else:
-while True:
-    time.sleep(86400)
+def init(initial_run=True):
+    """
+    Starts the connection
+    """
+    deviceId = MMConfig.getDeviceId()
+    newDevice = None
+    while True:
+        devices, browser = pychromecast.get_chromecasts(tries=None)
+        pychromecast.discovery.stop_discovery(browser)
+        for key,cc in enumerate(devices):
+            if str(cc.device.uuid) == deviceId:
+                newDevice = devices[key]
+                break
+        if newDevice is None and initial_run:
+            toNode('MMGCAST_BACKEND_STATUS', 'NOT_FOUND')
+            shutdown(None, 1)
+        elif newDevice is not None:
+            break
+    registerDevice(newDevice)
+
+async def main():
+    """
+    Main loop of MMM-GoogleCast's backend
+    """
+    global device
+    disconnected = False
+    signal.signal(signal.SIGINT, shutdown)
+    while True:
+        if not device.socket_client.is_connected:
+            toNode('MMGCAST_BACKEND_STATUS', 'RECONNECTING')
+            disconnected = True
+            init(False)
+        elif disconnected and device.socket_client.is_connected:
+            disconnected = False
+        else:
+            await asyncio.sleep(2)
+
+# Code entrypoint
+toNode('MMGCAST_BACKEND_STATUS', 'LOADING')
+logging.disable()
+init()
+loop = asyncio.get_event_loop()
+asyncio.ensure_future(main())
+loop.run_forever()
