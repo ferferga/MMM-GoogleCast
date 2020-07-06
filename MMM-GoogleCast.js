@@ -246,7 +246,7 @@ Module.register('MMM-GoogleCast', {
 		this.moduleLoaded = false;
 		this.importError = false;
 		this.unreachable = false;
-		this.sendSocketNotification('CONFIG', this.config);
+		this.sendSocketNotification('MMMGCAST_CONFIG', this.config);
 		Log.info('Starting module: ' + this.name);
 	}
 });
