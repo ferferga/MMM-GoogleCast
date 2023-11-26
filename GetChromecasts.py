@@ -18,5 +18,5 @@ for device in devices:
 
         print("------------------------------")
 
-print("\n\nNote the ID of the device do you want to integrate into your MagicMirror and put them inside config.js")
+print("\n\nNote the name of the device do you want to integrate into your MagicMirror and put them inside config.js")
 getpass.getpass("Press ENTER to exit")
