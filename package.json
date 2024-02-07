@@ -14,7 +14,7 @@
   ],
   "author": "Fernando Fernández",
   "contributors": "https://github.com/ferferga/MMM-GoogleCast/graphs/contributors",
-  "license": "GPL-3",
+  "license": "GPL-3.0-only",
   "bugs": {
     "url": "https://github.com/ferferga/MMM-GoogleCast/issues"
   },
